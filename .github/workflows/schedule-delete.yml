@@ -2,8 +2,8 @@ name: Trigger Delete on a CRON Schedule
 
 on:
   schedule:
-    # At 00:00 on Sunday.: https://crontab.guru/every-week
-    - cron: "0 0 * * 0"
+    # At 00:00 every day.: https://crontab.guru/every-day
+    - cron: "0 0 * * *"
 jobs:
   build:
     name: Trigger Delete

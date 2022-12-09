@@ -29,7 +29,7 @@ async fn main() -> Result<(), reqwest::Error> {
     let timeline = user_timeline(user_id, true, true, &token).with_page_size(delete_page_size);
     let (_, feed) = timeline.start().await.unwrap();
     for tweet in &*feed {
-        if chrono::Utc::now() - chrono::Duration::days(7) < tweet.created_at {
+        if chrono::Utc::now() - chrono::Duration::days(3) < tweet.created_at {
             continue;
         }
         info!("deleting...: id={} text={}", tweet.id, tweet.text);
