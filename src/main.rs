@@ -29,10 +29,11 @@ async fn main() -> Result<(), reqwest::Error> {
     let timeline = user_timeline(user_id, true, true, &token).with_page_size(delete_page_size);
     let (_, feed) = timeline.start().await.unwrap();
     for tweet in &*feed {
-        if chrono::Utc::now() - chrono::Duration::days(3) < tweet.created_at {
+        // Delete tweets prior to 3 days ago
+        if tweet.created_at < chrono::Utc::now() - chrono::Duration::days(3) {
             continue;
         }
-        info!("deleting...: id={} text={}", tweet.id, tweet.text);
+        info!("deleting...: id={} text={} at={}", tweet.id, tweet.text, tweet.created_at);
         match delete(tweet.id, &token).await {
             Ok(_) => info!("deleted: id={} text={}", tweet.id, tweet.text),
             Err(e) => warn!(
