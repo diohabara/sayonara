@@ -14,7 +14,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Delete
         run: |
-          RUST_LOG="info,warn" cargo run
+          RUST_LOG="info,warn,debug" cargo run --release
         env:
           TWITTER_CONSUMER_KEY: ${{ secrets.TWITTER_CONSUMER_KEY }}
           TWITTER_CONSUMER_SECRET: ${{ secrets.TWITTER_CONSUMER_SECRET }}

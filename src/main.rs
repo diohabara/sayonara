@@ -3,7 +3,7 @@ use egg_mode::{
     tweet::{delete, user_timeline},
     user::{self},
 };
-use log::{info, warn};
+use log::{info, warn, debug};
 
 use std::env;
 
@@ -30,7 +30,8 @@ async fn main() -> Result<(), reqwest::Error> {
     let (_, feed) = timeline.start().await.unwrap();
     for tweet in &*feed {
         // Delete tweets prior to 3 days ago
-        if tweet.created_at < chrono::Utc::now() - chrono::Duration::days(3) {
+        if chrono::Utc::now() - chrono::Duration::days(3) < tweet.created_at {
+            debug!("skipping...: id={} text={} at={}", tweet.id, tweet.text, tweet.created_at);
             continue;
         }
         info!("deleting...: id={} text={} at={}", tweet.id, tweet.text, tweet.created_at);
